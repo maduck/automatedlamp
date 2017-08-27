@@ -20,7 +20,6 @@ for i in pinList:
 def trigger() :
         for i in pinList:
           GPIO.output(i, GPIO.HIGH)
-          
           break
      
 try: 
