@@ -13,39 +13,28 @@ body {font-family: "Lato", sans-serif}
 
 <?php
 if (isset($_POST['tdlightOn'])) {
-  exec("sudo python /home/pi/tdlightOn.py", $out);
+  exec("/home/pi/light_switch.py --pin 2 --switch on", $out);
   var_dump($out);
-  alert($out);
-} 
-if (isset($_POST['tdlightOn'])) {
-  exec("sudo python /home/pi/tdlightOn.py", $out);
-  var_dump($out);
-  alert($out);
 }
 if (isset($_POST['tdlightOff'])) {
-  exec("sudo python /home/pi/tdlightOff.py", $out);
+  exec("/home/pi/light_switch.py --pin 2 --switch off", $out);
   var_dump($out);
-  alert($out);
 }
 if (isset($_POST['tblightOn'])) {
-  exec("sudo python /home/pi/tblightOn.py", $out);
+  exec("/home/pi/light_switch.py --pin 3 --switch on", $out);
   var_dump($out);
-  alert($out);
 }
 if (isset($_POST['tblightOff'])) {
-  exec("sudo python /home/pi/tblightOff.py", $out);
+  exec("/home/pi/light_switch.py --pin 3 --switch off", $out);
   var_dump($out);
-  alert($out);
 }
 if (isset($_POST['kklightOn'])) {
-  exec("sudo python /home/pi/kklightOn.py", $out);
+  exec("/home/pi/light_switch.py --pin 4 --switch on", $out);
   var_dump($out);
-  alert($out);
 }
 if (isset($_POST['kklightOff'])) {
-  exec("sudo python /home/pi/kklightOff.py", $out);
+  exec("/home/pi/light_switch.py --pin 4 --switch off", $out);
   var_dump($out);
-  alert($out);
 }
 ?>
 
