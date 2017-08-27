@@ -10,34 +10,54 @@
 body {font-family: "Lato", sans-serif}
 .mySlides {display: none}
 </style>
-
+<!--
 <?php
-if (isset($_POST['tdlightOn'])) {
-  exec("/home/pi/light_switch.py --pin 2 --switch on", $out);
-  var_dump($out);
-}
-if (isset($_POST['tdlightOff'])) {
-  exec("/home/pi/light_switch.py --pin 2 --switch off", $out);
-  var_dump($out);
-}
-if (isset($_POST['tblightOn'])) {
-  exec("/home/pi/light_switch.py --pin 3 --switch on", $out);
-  var_dump($out);
-}
-if (isset($_POST['tblightOff'])) {
-  exec("/home/pi/light_switch.py --pin 3 --switch off", $out);
-  var_dump($out);
-}
-if (isset($_POST['kklightOn'])) {
-  exec("/home/pi/light_switch.py --pin 4 --switch on", $out);
-  var_dump($out);
-}
-if (isset($_POST['kklightOff'])) {
-  exec("/home/pi/light_switch.py --pin 4 --switch off", $out);
-  var_dump($out);
+
+$lights = [
+	"td" => [
+		"display_name" => "TD",
+		"description" => "...",
+		"pin" => 2
+	],
+	"tb" => [
+		"display_name" => "TB",
+		"description" => "...",
+		"pin" => 3
+	],
+	"kk" => [
+		"display_name" => "KK",
+		"description" => "...",
+		"pin" => 4
+	]
+];
+
+$colors = [
+	"on" => "w3-pale-green",
+	"off" => "w3-pale-red"
+];
+$switch_text = [
+	"on" => "off",
+	"off" => "on"
+];
+var_dump($colors);
+
+$path = "/home/pi/automatedlamp";
+$lights_data = array();
+foreach ($lights as $light => $entry) {
+	$pin = $entry["pin"];
+	if (isset($_POST["id"]) and $_POST["id"] == $light){
+		$status = exec("$path/light_switch.py --pin $pin --switch reverse"); 
+	} else {
+		$status = exec("$path/light_switch.py --pin $pin"); 
+	}
+	$entry['status'] = $status;
+	$entry["switch_text"] = $switch_text[$status];
+	$entry['color'] = $colors[$status];
+	$lights_data[$light] = $entry;
+	var_dump($entry);
 }
 ?>
-
+-->
 <body>
 <!-- Navbar -->
 <div class="w3-top">
@@ -70,46 +90,23 @@ if (isset($_POST['kklightOff'])) {
     <h2 class="w3-wide">TERAS</h2>
     <p class="w3-opacity"><i>Bagian teras depan dan belakang</i></p>
     <div class="w3-row w3-padding-32" style="max-width: :800px">
+	<?php
+	foreach ($lights_data as $light => $entry) {
+	?>
         <div class="w3-third w3-margin-bottom">
-          <div class="w3-container w3-white">
-            <p><b>Teras Depan</b></p>
-            <p>Tekan tombol "on" untuk menyalakan lampu dan "off" untuk mematikan lampu teras depan</p>
-            <form method="post">
-            <button class="w3-button w3-black w3-margin-bottom" name="tdlightOn">ON</button>&nbsp;
-            <button class="w3-button w3-black w3-margin-bottom" name="tdlightOff">OFF</button>
+	  <div class="w3-container <?php echo $entry["color"] ?>">
+	  <p><b><?php echo $entry["name"] ?></b></p>
+	  <p><?php echo $entry["description"] ?></p>
+	    <form method="post">
+		<input type="hidden" name="id" value="<?php echo $light ?>" />
+ 	        <button class="w3-button w3-black w3-margin-bottom" name="button">switch <?php echo $entry["switch_text"]; ?></button>
             </form>
           </div>
         </div>
-        <div class="w3-third w3-margin-bottom">
-          <div class="w3-container w3-white">
-            <p><b>Teras Belakang</b></p>
-            <p>Tekan tombol "on" untuk menyalakan lampu dan "off" untuk mematikan lampu teras belakang</p>
-            <form method="post">
-            <button class="w3-button w3-black w3-margin-bottom" name="tblightOn">ON</button>&nbsp;
-            <button class="w3-button w3-black w3-margin-bottom" name="tblightOff">OFF</button>
-            </form> 
-          </div>
-        </div>
+	<?php
+	}
+	?>
       </div>
-  </div>
-
-  <!-- The Tour Section -->
-  <div class="w3-black" id="kamar">
-    <div class="w3-container w3-content w3-padding-64" style="max-width:800px">
-      <h2 class="w3-wide w3-center">KAMAR</h2>
-      <div class="w3-row-padding w3-padding-32" style="margin:0 -16px">
-        <div class="w3-third w3-margin-bottom">
-          <div class="w3-container w3-white">
-            <p><b>Kamar Ken</b></p>
-            <p>Tekan tombol "on" untuk menyalakan lampu dan "off" untuk mematikan lampu</p>
-            <form method="post">
-            <button class="w3-button w3-black w3-margin-bottom" name="kklightOn">ON</button>&nbsp;
-            <button class="w3-button w3-black w3-margin-bottom" name="kklightOff">OFF</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- About me section -->
