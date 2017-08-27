@@ -1,3 +1,4 @@
+#!home/pi
 import argparse
 import RPi.GPIO as GPIO
 
